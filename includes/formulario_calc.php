@@ -7,10 +7,6 @@
     <br>
     <input type="number" name="mon" placeholder="" min=0 required>
     <br>
-    <label>pon el % de interes</label>
-    <br>
-    <input type="number" name="int" placeholder="1,00" min=0 required>
-    <br>
     <label>pon en cuantos años quieres pagar tu casa</label>
     <br>
     <input type="number" name="anos" placeholder="" min=0 required>
