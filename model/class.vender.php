@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once('class.database.php');
 
 class vender
@@ -28,6 +27,7 @@ class vender
         $pro = $this->bus("provincias", $_POST['provincias']);
         $mun = $this->bus("municipios", $_POST['municipios']);
         $user = $_SESSION['usuario'];
+
         $enlace = $name . "-" . $pro . "-" . $mun;
 
         $sql = "SELECT * FROM vivienda WHERE enlace ='" . $enlace . "'";
