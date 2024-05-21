@@ -21,7 +21,7 @@
             require_once('model/class.inmueble.php');
             $inmueble = new inmue();
             $ve = $inmueble->ver($_GET['from']);
-            if (isset($_SESSION['user'])) {
+            if (isset($_SESSION['usuario'])) {
                 echo "A";
             }
         }
