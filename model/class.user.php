@@ -50,9 +50,6 @@ class user
 
                     if ($result) {
                         echo "Usuario creado correctamente";
-                        // Iniciamos la sesión y guardamos el valor
-                        $_SESSION["usuario"] = true;
-                        echo "a";
                     } else {
                         echo "Error al crear el usuario: " . $this->db->connection->error;
                     }

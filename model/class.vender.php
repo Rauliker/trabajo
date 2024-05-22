@@ -1,6 +1,5 @@
 <?php
 require_once('class.database.php');
-
 class vender
 {
     private $db;

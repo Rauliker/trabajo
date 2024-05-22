@@ -328,3 +328,8 @@ button a {
   cursor: pointer;
   margin-left: 10px;
 }
+
+.ocult{
+  display: none;
+
+}
