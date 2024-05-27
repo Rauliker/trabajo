@@ -10,5 +10,8 @@ class admin
 
     public function verificar()
     {
+        if ($_GET['username'] == "admin" || $_GET['password'] == "admin") {
+            echo "bienvenido admin";
+        }
     }
 }

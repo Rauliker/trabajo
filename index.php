@@ -45,7 +45,7 @@ switch ($url) {
     case 'financiar':
         include_once('controller/controller.financiar.php');
         break;
-    case 'administrador':
+    case 'administrar':
         include_once('admin/loginAdmin.php');
         break;
     default:

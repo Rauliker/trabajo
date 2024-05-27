@@ -9,15 +9,19 @@
 
 <body>
     <form method="post">
-        <label for="username">Username:</label>
+        <label>Username:</label>
         <input type="text" id="username" name="username"><br><br>
-        <label for="password">Password:</label>
+        <label>Password:</label>
         <input type="password" id="password" name="password"><br><br>
+        <input type="submit" name="Login" value="Login">
     </form>
     <?php
     require_once("admin/class.admin.php");
     $admin = new admin();
-    $verf = $admin->verificar();
+    if ($_GET['Login']) {
+        $verf = $admin->verificar();
+    }
+
     ?>
 </body>
 
