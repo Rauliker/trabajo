@@ -27,14 +27,23 @@ class Admin
         if (isset($_POST['Login'])) {
 
             $_SESSION['admin'] = "admin";
+            $conexion = $this->db->connection;
+
+            if ($conexion->connect_errno) {
+                echo "Error de conexión con la base de datos: " . $conexion->connect_errno;
+                exit;
+            }
+
             $sql = "SHOW TABLES;";
-            $result = $this->db->connection->query($sql);
+            $result = $conexion->query($sql);
+
             if ($result) {
-                foreach ($result as $key => $value) {
-                    $value;
+                while ($fila = $result->fetch_row()) {
+                    echo $fila[0] . "<br>";
                 }
+                $result->free();
             } else {
-                echo "Error al consultar la base de datos";
+                echo "Error al consultar la base de datos: " . $conexion->error;
             }
         }
     }
