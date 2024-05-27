@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <form method="post">
+    <form method="get">
         <label>Username:</label>
         <input type="text" id="username" name="username"><br><br>
         <label>Password:</label>
@@ -18,7 +18,7 @@
     <?php
     require_once("admin/class.admin.php");
     $admin = new admin();
-    if ($_GET['Login']) {
+    if (isset($_GET['Login'])) {
         $verf = $admin->verificar();
     }
 
