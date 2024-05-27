@@ -45,6 +45,9 @@ switch ($url) {
     case 'financiar':
         include_once('controller/controller.financiar.php');
         break;
+    case 'administrador':
+        include_once('controller/controller.administrador.php');
+        break;
     default:
         http_response_code(404);
         echo 'pàgina no trobada';
