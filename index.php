@@ -46,7 +46,7 @@ switch ($url) {
         include_once('controller/controller.financiar.php');
         break;
     case 'administrador':
-        include_once('controller/controller.administrador.php');
+        include_once('controller/controller.loginAdmin.php');
         break;
     default:
         http_response_code(404);
