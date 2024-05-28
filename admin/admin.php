@@ -10,6 +10,7 @@
 <body>
 
     <?php
+
     require_once("admin/class.admin.php");
     $admin = new admin();
     if (isset($_POST['password']) && isset($_POST['password']) && $_POST['password'] === "admin" && $_POST['password'] === "admin") {
