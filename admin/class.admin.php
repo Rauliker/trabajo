@@ -21,30 +21,53 @@ class Admin
             <input type="submit" name="Login" value="Login">
         </form>';
     }
-
-    public function verificar()
+    public function mostrar()
     {
-        if (isset($_POST['Login'])) {
+        $conexion = $this->db->connection;
 
-            $_SESSION['admin'] = "admin";
-            $conexion = $this->db->connection;
-
-            if ($conexion->connect_errno) {
-                echo "Error de conexión con la base de datos: " . $conexion->connect_errno;
-                exit;
-            }
-
-            $sql = "SHOW TABLES;";
-            $result = $conexion->query($sql);
-
-            if ($result) {
-                while ($fila = $result->fetch_row()) {
-                    echo $fila[0] . "<br>";
-                }
-                $result->free();
-            } else {
-                echo "Error al consultar la base de datos: " . $conexion->error;
-            }
+        if ($conexion->connect_errno) {
+            echo "Error de conexión con la base de datos: " . $conexion->connect_errno;
+            exit;
         }
+
+        $sql = "SHOW TABLES;";
+        $result = $conexion->query($sql);
+
+        if ($result) {
+            //echo '<form method="$_GET">';
+            while ($fila = $result->fetch_row()) {
+                echo "<a value='tabla' href='tabla'>" . $fila[0] . "</a><br>";
+                $_SESSION['tabla'] = $fila[0];
+            }
+            //echo '</form>';
+            $result->free();
+        } else {
+            echo "Error al consultar la base de datos: " . $conexion->error;
+        }
+    }
+    public function tablas($a)
+    {
+        $conexion = $this->db->connection;
+        $sql = "SELECT * FROM user";
+        $result = $conexion->query($sql);
+        echo "&nbsp;<a href='insertar'>Insertar</a></br>";
+        while ($fila = $result->fetch_row()) {
+
+            echo $fila[0] . "&nbsp;Cambiar&nbsp;borrar<br>";
+        }
+    }
+    public function insertar($a)
+    {
+        $conexion = $this->db->connection;
+        $sql = "SELECT * FROM user";
+        $result = $conexion->query($sql);
+        echo '<form method="get">';
+        foreach ($result as $value) {
+            foreach ($value as $key => $values) {
+                echo $key . "</br>";
+            }
+            break;
+        }
+        echo '</from>';
     }
 }

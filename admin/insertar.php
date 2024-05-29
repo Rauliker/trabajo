@@ -12,14 +12,12 @@
     <?php
     require_once("admin/class.admin.php");
     $admin = new admin();
-    if (isset($_SESSION['admin']) || (isset($_POST['Login']) && isset($_POST['password']) && isset($_POST['password']) && $_POST['password'] === "admin" && $_POST['password'] === "admin")) {
 
-        $_SESSION['admin'] = "admin";
-        $most = $admin->mostrar();
+    if (isset($_SESSION['admin'])) {
+        $rrr = $admin->insertar($_SESSION['tabla']);
     } else {
-        $verf = $admin->formulario();
+        header('Location: administrar');
     }
-
 
     ?>
 </body>

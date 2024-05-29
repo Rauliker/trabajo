@@ -48,6 +48,12 @@ switch ($url) {
     case 'administrar':
         include_once('admin/admin.php');
         break;
+    case 'tabla':
+        include_once('admin/tabla.php');
+        break;
+    case 'insertar':
+        include_once('admin/insertar.php');
+        break;
     default:
         http_response_code(404);
         echo 'pàgina no trobada';
