@@ -14,6 +14,9 @@
     $admin = new admin();
 
     if (isset($_SESSION['admin'])) {
+        if (isset($_GET['gtabla'])) {
+            $_SESSION['tabla'] = $_GET['gtabla'];
+        }
         $vvv = $admin->tablas($_SESSION['tabla']);
     } else {
         header('Location: administrar');

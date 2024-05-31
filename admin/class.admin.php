@@ -34,12 +34,11 @@ class Admin
         $result = $conexion->query($sql);
 
         if ($result) {
-            //echo '<form method="$_GET">';
+            echo '<form method="$_GET" action="tabla">';
             while ($fila = $result->fetch_row()) {
-                echo "<a value='tabla' href='tabla'>" . $fila[0] . "</a><br>";
-                $_SESSION['tabla'] = $fila[0];
+                echo "<button name='gtabla' value='" . $fila[0] . "' href='tabla'>" . $fila[0] . "</a><br>";
             }
-            //echo '</form>';
+            echo '</form>';
             $result->free();
         } else {
             echo "Error al consultar la base de datos: " . $conexion->error;
@@ -48,26 +47,56 @@ class Admin
     public function tablas($a)
     {
         $conexion = $this->db->connection;
-        $sql = "SELECT * FROM user";
+        $sql = "SELECT * FROM $a";
         $result = $conexion->query($sql);
-        echo "&nbsp;<a href='insertar'>Insertar</a></br>";
-        while ($fila = $result->fetch_row()) {
+        echo "<form method='get'>
+        &nbsp;<a href='insertar'>Insertar</a></br>";
 
-            echo $fila[0] . "&nbsp;Cambiar&nbsp;borrar<br>";
+        foreach ($result as $values) {
+            $i = 0;
+            foreach ($values as $key => $fila) {
+                if ($key != "visible") {
+                    if ($i == 0) {
+                        $ad = $fila;
+                        $i++;
+                    }
+                    echo $fila . " &nbsp";
+                }
+            }
+            echo "&nbsp;<button name='botonC' value='" . $ad . "'>Cambiar</button>
+            &nbsp;<button name='botonB' value='Borrar'>Borrar</button><br>";
         }
+        if (isset($_GET['botonC'])) {
+            ob_clean();
+            $this->Cambiar();
+        }
+        echo "<from>";
     }
     public function insertar($a)
+    {
+    }
+    public function Cambiar()
     {
         $conexion = $this->db->connection;
         $sql = "SELECT * FROM user";
         $result = $conexion->query($sql);
-        echo '<form method="get">';
-        foreach ($result as $value) {
-            foreach ($value as $key => $values) {
-                echo $key . "</br>";
+        echo "<form method='post'>";
+        foreach ($result as $values) {
+            foreach ($values as $key => $fila) {
+                echo "<label>" . $key . "</label></br>";
+                echo "<input type='text' name='" . $key . "' value='" . $fila . "'></br>";
             }
             break;
         }
-        echo '</from>';
+        echo '<input type="submit" name="baceptar" value="aceptar">';
+        echo "<button name='brechazar' value='cancelar'>cancelar</button></br>";
+        echo "</from>";
+        if (isset($_POST['brechazar'])) {
+            echo "aaaa";
+            header('Location: tabla');
+        } elseif (isset($_POST['baceptar'])) {
+            $sql = "UPDATE provincias SET nombre = 'Araba/Álava' WHERE provincias.id = 1;
+            ";
+        }
     }
 }
