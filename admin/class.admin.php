@@ -49,8 +49,9 @@ class Admin
         $conexion = $this->db->connection;
         $sql = "SELECT * FROM $a";
         $result = $conexion->query($sql);
+        echo "<a href='administrar'>atras</a>";
         echo "<form method='get'>
-        &nbsp;<a href='insertar'>Insertar</a></br>";
+        &nbsp;<button name='botonI' value='Insert'>Insertar</button></br>";
 
         foreach ($result as $values) {
             $i = 0;
@@ -64,39 +65,165 @@ class Admin
                 }
             }
             echo "&nbsp;<button name='botonC' value='" . $ad . "'>Cambiar</button>
-            &nbsp;<button name='botonB' value='Borrar'>Borrar</button><br>";
+            &nbsp;<button name='botonB' value='" . $ad . "'>Borrar</button><br>";
         }
         if (isset($_GET['botonC'])) {
             ob_clean();
-            $this->Cambiar();
+            $this->Cambiar($a, $_GET['botonC']);
+        } elseif (isset($_GET['botonI'])) {
+            ob_clean();
+            $this->insertar($a);
+        } elseif (isset($_GET['botonB'])) {
+            $this->borrar($a, $_GET['botonB']);
         }
         echo "<from>";
     }
+    public function borrar($a, $b)
+    {
+        try {
+            $conexion = $this->db->connection;
+            $sql = "SELECT * FROM $a";
+            $result = $conexion->query($sql);
+            $i = 0;
+            $idname = "";
+            $updatedData = [];
+            foreach ($result as $values) {
+                foreach ($values as $key => $fila) {
+                    if ($i == 0) {
+                        $i++;
+                        $idname = $key;
+                    }
+                    $updatedData[$key] = '';
+                }
+                break;
+            }
+            $conexion = $this->db->connection;
+            $sql = "DELETE FROM $a WHERE $idname = '$b'";
+            $conexion->query($sql);
+            header('Location: tabla');
+            echo "delete correcto";
+            exit;
+        } catch (\Throwable $th) {
+            echo "<p>Hubo un error al ejecutar la sentencia de delete: ";
+            echo "{$conexion->error}</p>";
+        }
+    }
     public function insertar($a)
     {
-    }
-    public function Cambiar()
-    {
         $conexion = $this->db->connection;
-        $sql = "SELECT * FROM user";
+        $sql = "SELECT * FROM $a";
         $result = $conexion->query($sql);
+        $i = 0;
+        $idname = "";
+        $id = "";
+        $updatedData = [];
+
         echo "<form method='post'>";
         foreach ($result as $values) {
             foreach ($values as $key => $fila) {
                 echo "<label>" . $key . "</label></br>";
-                echo "<input type='text' name='" . $key . "' value='" . $fila . "'></br>";
+                if ($key == "visible") {
+                    echo "<input type='number' name='" . $key . "' min='0' max='1'></br>";
+                } else {
+                    echo "<input type='text' name='" . $key . "' required></br>";
+                }
+
+                if ($i == 0) {
+                    $i++;
+                    $id = $fila;
+                    $idname = $key;
+                }
+                $updatedData[$key] = '';
             }
             break;
         }
         echo '<input type="submit" name="baceptar" value="aceptar">';
-        echo "<button name='brechazar' value='cancelar'>cancelar</button></br>";
-        echo "</from>";
-        if (isset($_POST['brechazar'])) {
-            echo "aaaa";
-            header('Location: tabla');
-        } elseif (isset($_POST['baceptar'])) {
-            $sql = "UPDATE provincias SET nombre = 'Araba/Álava' WHERE provincias.id = 1;
-            ";
+        echo "<a href='tabla'>atras</a>";
+        echo "</form>";
+        $x = 0;
+        if (isset($_POST['baceptar'])) {
+            try {
+                $sql = "INSERT INTO $a SET ";
+                foreach ($updatedData as $key => $value) {
+                    if ($x != 0) {
+                        $sql .= ", $key = '" . $_POST[$key] . "' ";
+                    } else {
+                        $x++;
+                        $sql .= "$key = '" . $_POST[$key] . "' ";
+                    }
+                }
+                $conexion->query($sql);
+                echo "registro insertado";
+            } catch (\Throwable $th) {
+                echo "<p>Hubo un error al ejecutar la sentencia de inserción: ";
+                echo "{$conexion->error}</p>";
+            }
+        }
+    }
+    public function Cambiar($a, $b)
+    {
+        $conexion = $this->db->connection;
+        $sql = "SELECT * FROM $a ";
+        $result = $conexion->query($sql);
+        $i = 0;
+        $idname = "";
+        $id = "";
+        $updatedData = [];
+        echo "<form method='post'>";
+        foreach ($result as $values) {
+            foreach ($values as $key => $fila) {
+                if ($i == 0) {
+                    $i++;
+                    $idname = $key;
+                }
+            }
+            break;
+        }
+        $sql = "SELECT * FROM $a WHERE $idname='$b'";
+        $result = $conexion->query($sql);
+        $i = 0;
+        foreach ($result as $values) {
+            foreach ($values as $key => $fila) {
+                echo "<label>" . $key . "</label></br>";
+                if ($key == "visible") {
+                    echo "<input type='number' name='" . $key . "' value='" . $fila . "' min='0' max='1' ></br>";
+                } else {
+                    echo "<input type='text' name='" . $key . "' value='" . $fila . "' required></br>";
+                }
+                if ($i == 0) {
+                    $i++;
+                    $id = $fila;
+                    $idname = $key;
+                }
+
+                $updatedData[$key] = $fila;
+            }
+            break;
+        }
+
+
+        echo '<input type="submit" name="baceptar" value="aceptar">';
+        echo "<a href='tabla'>atras</a>";
+        echo "</form>";
+        $x = 0;
+        if (isset($_POST['baceptar'])) {
+            try {
+                $sql = "UPDATE $a SET ";
+                foreach ($updatedData as $key => $value) {
+                    if ($x != 0) {
+                        $sql .= ", $key = '" . $_POST[$key] . "' ";
+                    } else {
+                        $x++;
+                        $sql .= "$key = '" . $_POST[$key] . "' ";
+                    }
+                }
+                $sql .= " WHERE $idname  = '$id'";
+                $conexion->query($sql);
+                echo "fila editada";
+            } catch (\Throwable $th) {
+                echo "<p>Hubo un error al ejecutar la sentencia de inserción: ";
+                echo "{$conexion->error}</p>";
+            }
         }
     }
 }
