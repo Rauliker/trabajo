@@ -52,20 +52,36 @@ class Admin
         echo "<a href='administrar'>atras</a>";
         echo "<form method='get'>
         &nbsp;<button name='botonI' value='Insert'>Insertar</button></br>";
+        echo "<table border='black'>";
+        foreach ($result as $values) {
+            echo "<tr>";
+            $i = 0;
+            foreach ($values as $key => $fila) {
+                if ($i == 0) {
+                    $ad = $fila;
+                    $i++;
+                }
+                echo "<th>$key</th>";
+            }
+            echo "</tr>";
+            break;
+        }
+
+
 
         foreach ($result as $values) {
             $i = 0;
+            echo "<tr>";
             foreach ($values as $key => $fila) {
-                if ($key != "visible") {
-                    if ($i == 0) {
-                        $ad = $fila;
-                        $i++;
-                    }
-                    echo $fila . " &nbsp";
+                if ($i == 0) {
+                    $ad = $fila;
+                    $i++;
                 }
+                echo "<td>$fila </td>";
             }
-            echo "&nbsp;<button name='botonC' value='" . $ad . "'>Cambiar</button>
-            &nbsp;<button name='botonB' value='" . $ad . "'>Borrar</button><br>";
+            echo "<td><button name='botonC' value='" . $ad . "'>Cambiar</button></td>
+            <td><button name='botonB' value='" . $ad . "'>Borrar</button></td>";
+            echo "</tr>";
         }
         if (isset($_GET['botonC'])) {
             ob_clean();
@@ -76,7 +92,8 @@ class Admin
         } elseif (isset($_GET['botonB'])) {
             $this->borrar($a, $_GET['botonB']);
         }
-        echo "<from>";
+        echo "</table>";
+        echo "</from>";
     }
     public function borrar($a, $b)
     {
